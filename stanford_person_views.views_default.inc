@@ -559,6 +559,15 @@ function stanford_person_views_views_default_views() {
   $handler->display->display_options['fields']['field_s_person_staff_type']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_s_person_staff_type']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_s_person_staff_type']['delta_offset'] = '0';
+  /* Field: Content: Title and Department */
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['id'] = 'field_s_person_faculty_title';
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['table'] = 'field_data_field_s_person_faculty_title';
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['field'] = 'field_s_person_faculty_title';
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['label'] = '';
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['delta_limit'] = '3';
+  $handler->display->display_options['fields']['field_s_person_faculty_title']['delta_offset'] = '0';
   /* Field: Content: Office */
   $handler->display->display_options['fields']['field_s_person_office_location']['id'] = 'field_s_person_office_location';
   $handler->display->display_options['fields']['field_s_person_office_location']['table'] = 'field_data_field_s_person_office_location';
@@ -616,6 +625,7 @@ function stanford_person_views_views_default_views() {
 
 <div class="postcard-col2">
 <h3>[title] </h3>
+<div class="title-dept"> [field_s_person_faculty_title]</div>
 [field_s_person_office_location]
 [field_s_person_office_hours]
 [field_s_person_phone_display]
@@ -665,7 +675,7 @@ function stanford_person_views_views_default_views() {
   $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Search administrators by name';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Search staff by name';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
@@ -676,9 +686,6 @@ function stanford_person_views_views_default_views() {
     9 => 0,
     7 => 0,
     5 => 0,
-    15 => 0,
-    17 => 0,
-    19 => 0,
   );
   /* Filter criterion: Content: Type (field_s_person_type) */
   $handler->display->display_options['filters']['field_s_person_type_value']['id'] = 'field_s_person_type_value';
@@ -702,6 +709,7 @@ function stanford_person_views_views_default_views() {
 
   /* Display: Staff Page */
   $handler = $view->new_display('page', 'Staff Page', 'page');
+  $handler->display->display_options['display_comment'] = 'Author: CJW';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
