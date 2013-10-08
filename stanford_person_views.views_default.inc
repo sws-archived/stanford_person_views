@@ -52,7 +52,6 @@ function stanford_person_views_views_default_views() {
   $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
     'stanford_faculty_type' => 'stanford_faculty_type',
     's_destination' => 0,
-    'degree_requirements' => 0,
     'news_categories' => 0,
     'publication_type' => 0,
     'stanford_slide_category' => 0,
@@ -477,7 +476,7 @@ function stanford_person_views_views_default_views() {
 
   $view = new view();
   $view->name = 'stanford_person_staff';
-  $view->description = '';
+  $view->description = 'Sorted by type tax. term, by weight, then by last and first names';
   $view->tag = 'default';
   $view->base_table = 'node';
   $view->human_name = 'Stanford Person: Staff';
@@ -500,13 +499,6 @@ function stanford_person_views_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['grouping'] = array(
-    0 => array(
-      'field' => 'field_s_person_staff_type',
-      'rendered' => 1,
-      'rendered_strip' => 0,
-    ),
-  );
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   /* Relationship: Content: Taxonomy terms on node */
@@ -709,7 +701,7 @@ function stanford_person_views_views_default_views() {
 
   /* Display: Staff Page */
   $handler = $view->new_display('page', 'Staff Page', 'page');
-  $handler->display->display_options['display_comment'] = 'Author: CJW';
+  $handler->display->display_options['display_comment'] = 'CJW';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
@@ -736,9 +728,51 @@ function stanford_person_views_views_default_views() {
 
   /* Display: Staff Block */
   $handler = $view->new_display('block', 'Staff Block', 'block_staff');
+  $handler->display->display_options['display_comment'] = 'Author: CJW';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+
+  /* Display: Staff Page: Group by type */
+  $handler = $view->new_display('page', 'Staff Page: Group by type', 'page_1');
+  $handler->display->display_options['display_comment'] = 'CJW';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'field_s_person_staff_type',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
+    'stanford_staff_type' => 'stanford_staff_type',
+  );
+  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['path'] = 'people/staff/grouped';
+  $handler->display->display_options['menu']['title'] = 'Staff';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
   $export['stanford_person_staff'] = $view;
 
   $view = new view();
